@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.ProjectOxford.Vision;
-using Microsoft.ProjectOxford.Vision.Contract;
-using System.IO;
 using System.Threading.Tasks;
 using DevExpress.Web;
 using System.Web.Hosting;
-using Microsoft.ProjectOxford.Emotion;
+using DXVisionSample.Code.Cognitive;
+using DXVisionSample.Code;
 
 namespace DXVisionSample
 {
 	public partial class Default : System.Web.UI.Page
 	{
 
-		const string apiKey = "ae2a477837f34d1bb0314b20705b36ab";
+		const string apiKey = "8701c7f68f9f4cd8be0bd99fe3ae12b0";
 		protected void Page_Load(object sender, EventArgs e)
 		{
 
@@ -27,43 +26,52 @@ namespace DXVisionSample
 		{
 			ASPxUploadControl ctrl = sender as ASPxUploadControl;
 			if (ctrl != null) {
-				AnalysisResult result = UploadAndAnalyzeImage(ctrl.UploadedFiles[0].FileContent);
+				var result = UploadAndAnalyzeImage(ctrl.UploadedFiles[0].FileBytes);
+				
+				if (String.IsNullOrEmpty(result))
+				{
+					e.CallbackData = "<p>Error analyzing image</p>";
+				}
+				else
+				{
+					var resultObj = Newtonsoft.Json.JsonConvert.DeserializeObject<VisionResponse>(result);
 
-				var desc = (from d in result.Description.Captions
-							select $"{d.Text} ({d.Confidence})").ToArray();
+					var desc = (from d in resultObj.Description.Captions
+								select $"{d.Name} ({d.Score})").ToArray();
 
-				e.CallbackData = "<p>" + String.Join("<br />", desc) + "</p><p>Tags: " + String.Join(",", result.Description.Tags) + "</p>";
+					e.CallbackData = "<p>" + String.Join("<br />", desc) + "</p><p>Tags: " + String.Join(",", resultObj.Description.Tags) + "</p>";
+					mmoResults.Text = JsonPrint.Prettify(result);
+				}
 			}
 			
 		}
 
-		private AnalysisResult UploadAndAnalyzeImage(Stream imageContent)
+		private string UploadAndAnalyzeImage(byte[] imageBytes)
 		{
-			VisionServiceClient VisionServiceClient = new VisionServiceClient(apiKey);
+			VisionClient clnt = new VisionClient(VisionLocation.WestCentralUS, apiKey);
 
-
-			//var analysisResult = VisionServiceClient.DescribeAsync(imageContent);
-			var analysisResult = VisionServiceClient.AnalyzeImageAsync(imageContent, new VisualFeature[] {
-				VisualFeature.Faces,
-				VisualFeature.Adult,
-				VisualFeature.Categories,
-				VisualFeature.Color,
-				VisualFeature.Description,
-				VisualFeature.Tags
+			string analysisResult = clnt.Analyze(imageBytes, new VisionFeatures[] {
+				VisionFeatures.Faces,
+				VisionFeatures.Adult,
+				VisionFeatures.Categories,
+				VisionFeatures.Color,
+				VisionFeatures.Description,
+				VisionFeatures.Tags
+			}, 
+			new VisionDetails[] {
+				VisionDetails.Celebrities
 			});
-
-			Task.WaitAll(analysisResult);
-
-			return analysisResult.Result;			
+			
+			return analysisResult;			
 		}
 
-		private Microsoft.ProjectOxford.Emotion.Contract.Emotion[] AnalyzeEmotions(Stream imageContent)
-		{
-			EmotionServiceClient client = new EmotionServiceClient(apiKey);
-			var result = client.RecognizeAsync(imageContent);
-			Task.WaitAll(result);
+		//private Microsoft.ProjectOxford.Emotion.Contract.Emotion[] AnalyzeEmotions(Stream imageContent)
+		//{
+		//	EmotionServiceClient client = new EmotionServiceClient(apiKey);
+		//	var result = client.RecognizeAsync(imageContent);
+		//	Task.WaitAll(result);
 
-			return result.Result;
-		}
+		//	return result.Result;
+		//}
 	}
 }

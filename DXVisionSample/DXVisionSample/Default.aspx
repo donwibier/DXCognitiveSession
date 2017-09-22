@@ -19,6 +19,10 @@
 		<div>
 			<dx:ASPxLabel runat="server" ID="results" ClientInstanceName="resultsLabel" Text="Results"></dx:ASPxLabel>
 		</div>
+		<div style="clear: both"></div>
+		<div>
+			<dx:ASPxMemo runat="server" ID="mmoResults" ClientInstanceName="resultsMemo" Enabled="False" Height="478px" ReadOnly="True" Width="860px" ></dx:ASPxMemo>
+		</div>
 	</div>
 	</form>
 </body>
