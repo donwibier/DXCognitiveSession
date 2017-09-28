@@ -39,8 +39,9 @@ namespace DXVisionSample
 					var desc = (from d in resultObj.Description.Captions
 								select $"{d.Name} ({d.Score})").ToArray();
 
-					e.CallbackData = "<p>" + String.Join("<br />", desc) + "</p><p>Tags: " + String.Join(",", resultObj.Description.Tags) + "</p>";
-					mmoResults.Text = JsonPrint.Prettify(result);
+					//e.CallbackData = "<p>" + String.Join("<br />", desc) + "</p><p>Tags: " + String.Join(",", resultObj.Description.Tags) + "</p>";
+                    e.CallbackData = JsonPrint.Prettify(result);
+                    
 				}
 			}
 			
@@ -64,14 +65,5 @@ namespace DXVisionSample
 			
 			return analysisResult;			
 		}
-
-		//private Microsoft.ProjectOxford.Emotion.Contract.Emotion[] AnalyzeEmotions(Stream imageContent)
-		//{
-		//	EmotionServiceClient client = new EmotionServiceClient(apiKey);
-		//	var result = client.RecognizeAsync(imageContent);
-		//	Task.WaitAll(result);
-
-		//	return result.Result;
-		//}
 	}
 }

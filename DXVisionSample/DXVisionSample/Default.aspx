@@ -13,7 +13,11 @@
 		<dx:ASPxUploadControl ID="ASPxUploadControl1" runat="server" NullText="Upload a file to analyze" UploadMode="Auto" Width="280px" OnFilesUploadComplete="ASPxUploadControl1_FilesUploadComplete" ShowUploadButton="True">
 			<AdvancedModeSettings EnableDragAndDrop="True">
 			</AdvancedModeSettings>
-			<ClientSideEvents FilesUploadComplete="function(s, e){ resultsLabel.SetText(e.callbackData); }" />
+			<ClientSideEvents FilesUploadComplete="function(s, e) { 
+                mmo.SetValue(e.callbackData);
+                //resultsLabel.SetText(e.callbackData); 
+                
+             }" />
 		</dx:ASPxUploadControl>
 		<div style="clear: both"></div>
 		<div>
@@ -21,8 +25,10 @@
 		</div>
 		<div style="clear: both"></div>
 		<div>
-			<dx:ASPxMemo runat="server" ID="mmoResults" ClientInstanceName="resultsMemo" Enabled="False" Height="478px" ReadOnly="True" Width="860px" ></dx:ASPxMemo>
+			<dx:ASPxMemo runat="server" ID="mmoResults" ClientInstanceName="mmo" Height="478px" ReadOnly="True" Width="860px" 
+                EnableClientSideAPI="true"></dx:ASPxMemo>
 		</div>
+        
 	</div>
 	</form>
 </body>
