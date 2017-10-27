@@ -104,7 +104,7 @@
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
-    <Content Include="speech.1.0.0.js" />
+    <Content Include="Scripts\speech.browser.sdk.js" />
     <Content Include="Speech.aspx" />
     <Content Include="Web.config" />
     <Content Include="packages.config" />
@@ -120,7 +120,7 @@
   <ItemGroup>
     <Compile Include="Code\Cognitive\Vision.cs" />
     <Compile Include="Code\Cognitive\VisionResponse.cs" />
-    <Compile Include="Code\ImageUtilscs.cs" />
+    <Compile Include="Code\ImageUtils.cs" />
     <Compile Include="Code\JsonPrint.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
