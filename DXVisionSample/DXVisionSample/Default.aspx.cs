@@ -48,10 +48,12 @@ namespace DXVisionSample
 		}
 
 		private string UploadAndAnalyzeImage(byte[] imageBytes)
-		{
+		{			
+			byte[] data = ImageUtils.GetBytes(ImageUtils.ScaleImage(ImageUtils.CreateImage(imageBytes), 1024, 768), System.Drawing.Imaging.ImageFormat.Png);
+
 			VisionClient clnt = new VisionClient(VisionLocation.WestCentralUS, apiKey);
 
-			string analysisResult = clnt.Analyze(imageBytes, new VisionFeatures[] {
+			string analysisResult = clnt.Analyze(data, new VisionFeatures[] {
 				VisionFeatures.Faces,
 				VisionFeatures.Adult,
 				VisionFeatures.Categories,

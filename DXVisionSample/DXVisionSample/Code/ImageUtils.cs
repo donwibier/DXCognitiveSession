@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
 
 namespace DXVisionSample.Code
 {
-    public static class ImageProcessingUtility
+    public static class ImageUtils
     {
+		
         /// <summary>
         /// Scales an image proportionally.  Returns a bitmap.
         /// </summary>
@@ -42,6 +44,24 @@ namespace DXVisionSample.Code
         {
             bmp.Save(output, System.Drawing.Imaging.ImageFormat.Png);
         }
+
+		static public Image CreateImage(byte[] data)
+		{
+			using (MemoryStream stream = new MemoryStream(data))
+			{
+				Image result = Image.FromStream(stream);
+				return result;
+			}
+		}
+
+		static public byte[] GetBytes(Image image, ImageFormat format)
+		{
+			using (MemoryStream stream = new MemoryStream())
+			{
+				image.Save(stream, format);
+				return stream.ToArray();
+			}
+		}
     }
 
     //Stream img = new MemoryStream();
