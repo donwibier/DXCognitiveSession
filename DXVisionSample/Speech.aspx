@@ -18,7 +18,7 @@
             <tr>
                 <td align="right"><a href="https://www.microsoft.com/cognitive-services/en-us/sign-up" target="_blank">Subscription</a>:</td>
                 <td>
-                    <input id="key" type="text" size="40" value="YOUR_BING_SPEECH_API_KEY"></td>
+                    <input id="key" type="text" size="40" value="69e438676df941af9793684b6309f107"></td>
             </tr>
             <tr>
                 <td align="right">Language:</td>
@@ -89,7 +89,7 @@
                     </table>
                 </td>
             </tr>
-            <tr>
+            <tr> 
                 <td align="right">Status:</td>
                 <td align="left"><span id="statusDiv"></span></td>
             </tr>
