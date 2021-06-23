@@ -1,0 +1,62 @@
+﻿@page "/"
+@using System.Text.Json
+@using DXVision.BlazorApp.Shared 
+@inject NavigationManager NavigationManager
+@inject HttpClient http;
+ 
+<h1>Vision Test</h1>
+<div class="row">
+	<div class="col-2">
+		<div id="overviewDemoDropZone" class="card custom-drop-zone jumbotron w-100 m-0">
+			<span class="drop-file-icon mb-3"></span>
+			<span>Drop File Here</span><span class="m-1">or</span>
+			<button id="overviewDemoSelectButton" class="btn border-primary btn-primary m-1">Select File</button>
+		</div>
+		<DxUpload Name="myFile" Visible="@UploadVisible" ExternalSelectButtonCssSelector="#overviewDemoSelectButton" 
+				  ExternalDropZoneCssSelector="#overviewDemoDropZone" 
+				  ChunkSize="200000" MaxFileSize="15000000"
+				  ExternalDropZoneDragOverCssClass="bg-light border-secondary text-dark" 
+				  AllowedFileExtensions="@(new List<string> { ".jpg", ".jpeg", ".gif", ".png" })"
+				  UploadUrl="@GetUploadUrl("api/Upload/UploadChunkedFile/")" CssClass="w-100"
+				  FileUploaded="@(async(args)=>await OnFileUploaded(args))">
+		</DxUpload>
+	</div>
+	<div class="col-10">
+		<img src="@imageUrl" style="width: 200px; height: auto;" />
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<DxMemo @bind-Text="@analyzerResult"
+				NullText="Results will appear here..."
+				ReadOnly="true"
+				Rows="10"
+				Columns="100" />
+	</div>
+</div>
+@code{
+	bool UploadVisible { get; set; } = false;
+	string analyzerResult = "";
+	string imageUrl = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+	protected void SelectedFilesChanged(IEnumerable<UploadFileInfo> files)
+	{
+		UploadVisible = files.ToList().Count > 0;
+		InvokeAsync(StateHasChanged);
+	}
+	protected string GetUploadUrl(string url)
+	{
+		return NavigationManager.ToAbsoluteUri(url).AbsoluteUri;
+	}
+
+	async Task  OnFileUploaded(FileUploadEventArgs args)
+	{		
+		string url = GetUploadUrl($"api/ImageAnalyze/Analyze?fileid={args.FileInfo.Guid}");
+		var response = await http.GetFromJsonAsync<AnalyzeResponse>(url);
+		analyzerResult = JsonPrint.Prettify(JsonSerializer.Serialize(response.Result));
+		imageUrl = response.ImageUrl;
+
+		await InvokeAsync(StateHasChanged);
+	}
+}
+

@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace DXVisionSample.Code
+namespace DXVision.BlazorApp.Server.Utils
 {
     public static class ImageUtils
     {
-		
+
         /// <summary>
         /// Scales an image proportionally.  Returns a bitmap.
         /// </summary>
@@ -18,7 +18,7 @@ namespace DXVisionSample.Code
         /// <param name="maxWidth"></param>
         /// <param name="maxHeight"></param>
         /// <returns></returns>
-        static public Bitmap ScaleImage(System.Drawing.Image image, int maxWidth, int maxHeight)
+        public static Bitmap ScaleImage(Image image, int maxWidth, int maxHeight)
         {
             var ratioX = (double)maxWidth / image.Width;
             var ratioY = (double)maxHeight / image.Height;
@@ -36,21 +36,27 @@ namespace DXVisionSample.Code
 
         public static Bitmap ScaleImage(Stream image, int maxWidth, int maxHeight)
         {
-            System.Drawing.Image img = System.Drawing.Image.FromStream(image);
+			Image img = Image.FromStream(image);
             return ScaleImage(img, maxWidth, maxHeight);
         }
 
         public static void WritePNG(Bitmap bmp, Stream output)
         {
-            bmp.Save(output, System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(output, ImageFormat.Png);
+        }
+
+        public static Image CreateImage(Stream data)
+		{
+            Image result = Image.FromStream(data);
+            return result;
         }
 
 		public static Image CreateImage(byte[] data)
 		{
 			using (MemoryStream stream = new MemoryStream(data))
 			{
-				Image result = Image.FromStream(stream);
-				return result;
+                var result = CreateImage(stream);
+                return result;
 			}
 		}
 
