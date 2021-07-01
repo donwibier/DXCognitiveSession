@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace DXVisionSample.Code
+namespace SpeechSample
 {
 	public static class JsonPrint
 	{		

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DXVisionSample", "DXVisionSample\DXVisionSample.csproj", "{56310ED4-5394-47E2-9098-274B4C0D57BF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeechSample", "SpeechSample\SpeechSample.csproj", "{AEDEE4DC-D6E4-47D9-BFF5-A2A6755EDDB5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DXVision.BlazorApp", "DXVision.BlazorApp", "{EFC3A8F5-B04D-4C23-B175-CC74B203FBF0}"
@@ -21,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{56310ED4-5394-47E2-9098-274B4C0D57BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56310ED4-5394-47E2-9098-274B4C0D57BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56310ED4-5394-47E2-9098-274B4C0D57BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56310ED4-5394-47E2-9098-274B4C0D57BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEDEE4DC-D6E4-47D9-BFF5-A2A6755EDDB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AEDEE4DC-D6E4-47D9-BFF5-A2A6755EDDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEDEE4DC-D6E4-47D9-BFF5-A2A6755EDDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU

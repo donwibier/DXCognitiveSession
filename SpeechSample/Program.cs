@@ -10,11 +10,11 @@ namespace SpeechSample
 
 	class Program
 	{
-		static readonly string luisAppId = "416311e4-e365-4cba-9f6a-63eba0e4bf58";
-		static readonly string luisKey = "59990945ef334679b426b6a365957443";
-		static readonly string bingKey = "c2abbdbf7988481697718ff4956d2ac9";
+		static readonly string luisAppId = "302732a3-ef55-43b6-80d1-27709f7578cb";
+		static readonly string luisKey = "ec2cf4cb444945708c09ab8f16805a12";
+		static readonly string bingKey = "9f0af4eefd0742c0bd2b9de2641a0a87";
 		
-		static readonly SpeechConfig config = SpeechConfig.FromSubscription("2421b8acd9584cec8fa566d4304e7afd", "westus");
+		static readonly SpeechConfig config = SpeechConfig.FromSubscription("de61811d40ef4d1eb8cd7f134e9ad56a", "westus");
 		
 		
 		static async Task Main(string[] args)
@@ -22,7 +22,7 @@ namespace SpeechSample
 			var cancelled = false;
 
 			Console.WriteLine("Starting up");
-			SpeechResult<string> spkResult = await Speech.Speak(config, "Hi, how can I help you?");
+			SpeechResult<string> spkResult = await Speech.Speak(config, "Hi, welcome to DWX Nuremberg conference.");
 			if (!spkResult.Success)
 			{
 				Console.WriteLine("I can't speak");
@@ -47,13 +47,14 @@ namespace SpeechSample
 					{
 						//string str = SampleJSON.Data;
 						string str = await Luis.Analyze(luisAppId, luisKey, result.Result);
+						
+						Console.WriteLine(JsonPrint.Prettify(str));
 						LuisResponse resp = JsonConvert.DeserializeObject<LuisResponse>(str);
-						Console.WriteLine(str);
-						var intent = (resp.TopScoringIntent?.Intent ?? "").ToLower();
-						var score = (resp.TopScoringIntent?.Score ?? 0);
+						var intent = (resp.Prediction.TopIntent ?? "").ToLower();
+						var score = (resp.Prediction.Intents.Score?.Score ?? 0);
 
-						string departure = resp.Entities.FirstOrDefault(x => x.Type == "departure")?.Entity ?? "";
-						string destination = resp.Entities.FirstOrDefault(x => x.Type == "destination")?.Entity ?? "";
+						string departure = resp.Prediction.Entities.Instance.Departure?.FirstOrDefault()?.Text ?? "";
+						string destination = resp.Prediction.Entities.Instance.Destination?.FirstOrDefault()?.Text ?? "";
 
 						if (score > 0.2)
 						{

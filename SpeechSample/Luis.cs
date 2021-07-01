@@ -16,7 +16,7 @@ namespace SpeechSample
 			var queryString = HttpUtility.ParseQueryString(string.Empty);
 
 			// The request header contains your subscription key
-			client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", endpointKey);
+			//client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", endpointKey);
 
 			// The "q" parameter contains the utterance to send to LUIS
 			queryString["q"] = queryText;
@@ -27,7 +27,10 @@ namespace SpeechSample
 			queryString["spellCheck"] = "false";
 			queryString["staging"] = "false";
 
-			var endpointUri = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/" + luisAppId + "?" + queryString;
+			//var endpointUri = "https://dxlanguageunderstanding-demo.cognitiveservices.azure.com/luis/prediction/v3.0/apps/" + luisAppId + "?" + queryString;
+			var endpointUri = $"https://dxlanguageunderstanding-demo.cognitiveservices.azure.com/luis/prediction/v3.0/apps/{luisAppId}/slots/staging/predict?subscription-key={endpointKey}&verbose=true&show-all-intents=true&log=true&query={queryString}";
+
+
 			var response = await client.GetAsync(endpointUri);
 
 			var strResponseContent = await response.Content.ReadAsStringAsync();
